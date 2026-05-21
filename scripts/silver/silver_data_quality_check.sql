@@ -30,16 +30,25 @@ HAVING COUNT(*)>1
 
 SELECT COUNT(*) FROM silver.loan_default
 WHERE year IS NULL
+SELECT DISTINCT year FROM silver.loan_default
 
 SELECT DISTINCT loan_limit FROM silver.loan_default
+SELECT COUNT(*) FROM silver.loan_default
+WHERE loan_limit = 'n/a'
 
 SELECT DISTINCT gender FROM silver.loan_default
+SELECT COUNT(*) FROM silver.loan_default
+WHERE gender = 'n/a'
 
 SELECT DISTINCT approval_in_advance FROM silver.loan_default
+SELECT COUNT(*) FROM silver.loan_default
+WHERE approval_in_advance = 'n/a'
 
 SELECT DISTINCT loan_type FROM silver.loan_default
 
 SELECT DISTINCT loan_purpose FROM silver.loan_default
+SELECT COUNT(*) FROM silver.loan_default
+WHERE loan_purpose = 'n/a'
 
 SELECT DISTINCT credit_worthiness FROM silver.loan_default
 
@@ -144,6 +153,9 @@ WHERE loan_to_value_ratio IS NULL
 
 SELECT DISTINCT loan_to_value_ratio FROM silver.loan_default
 
+SELECT loan_to_value_ratio,property_value FROM silver.loan_default
+WHERE loan_to_value_ratio IS NULL AND property_value IS NULL
+
 SELECT COUNT(*) FROM silver.loan_default
 WHERE region IS NULL
 
@@ -173,6 +185,8 @@ SELECT COUNT(*) FROM silver.loan_default
 WHERE source_file IS NULL
 
 SELECT DISTINCT source_file FROM silver.loan_default
+
+
 
 
 

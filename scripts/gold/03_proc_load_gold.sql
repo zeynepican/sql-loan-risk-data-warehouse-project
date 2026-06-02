@@ -29,6 +29,7 @@ risk analysis, and machine learning use cases.
 
 ================================================================================
 */
+
 CREATE OR REPLACE PROCEDURE gold.load_loan_default_gold()
 LANGUAGE plpgsql
 AS $$
@@ -195,30 +196,35 @@ BEGIN
 	TRUNCATE TABLE gold.dim_application RESTART IDENTITY CASCADE;
 	RAISE NOTICE '>> Inserting Data Into: gold.dim_application';
 
-	WITH base_application AS (
-		SELECT DISTINCT
-		s.neg_amortization,
-		s.is_interest_only,
-		s.is_lump_sum_payment,
-		s.source_file
-		FROM gold.stg_loan_default s
-	)
-
 	INSERT INTO gold.dim_application (
-		neg_amortization,
-		is_interest_only,
-		is_lump_sum_payment,
-		load_timestamp,
-		source_file
-	)
-	SELECT
-		neg_amortization,
-		is_interest_only,
-		is_lump_sum_payment,
-		CURRENT_TIMESTAMP,
-		source_file
-	FROM base_application;
+    neg_amortization,
+    is_interest_only,
+    is_lump_sum_payment,
+    load_timestamp,
+    source_file
+)
+SELECT DISTINCT
+    CASE 
+        WHEN s.neg_amortization IS NULL THEN 'UNKNOWN'
+        WHEN s.neg_amortization = true THEN 'TRUE'
+        ELSE 'FALSE'
+    END AS neg_amortization,
 
+    CASE 
+        WHEN s.is_interest_only IS NULL THEN 'UNKNOWN'
+        WHEN s.is_interest_only = true THEN 'TRUE'
+        ELSE 'FALSE'
+    END AS is_interest_only,
+
+    CASE 
+        WHEN s.is_lump_sum_payment IS NULL THEN 'UNKNOWN'
+        WHEN s.is_lump_sum_payment = true THEN 'TRUE'
+        ELSE 'FALSE'
+    END AS is_lump_sum_payment,
+
+    CURRENT_TIMESTAMP,
+    s.source_file
+FROM gold.stg_loan_default s;
 	
     RAISE NOTICE '>>Truncating Table: gold.fact_loan_application';
 	TRUNCATE TABLE gold.fact_loan_application RESTART IDENTITY CASCADE;
@@ -304,16 +310,30 @@ BEGIN
 	        ON s.credit_type = dcp.credit_type
 		   AND s.approval_in_advance = dcp.approval_in_advance
 		   AND s.submission_of_application = dcp.submission_of_application
-	       AND CASE
+	        AND CASE
 	            WHEN s.credit_score >= 750 THEN 'low_risk'
 	            WHEN s.credit_score >= 600 THEN 'medium_risk'
 	            ELSE 'high_risk'
 	            END = dcp.credit_score_segment
 
         LEFT JOIN gold.dim_application da
-            ON s.neg_amortization = da.neg_amortization
-           AND s.is_interest_only = da.is_interest_only
-           AND s.is_lump_sum_payment = da.is_lump_sum_payment
+    ON CASE 
+        WHEN s.neg_amortization IS NULL THEN 'UNKNOWN'
+        WHEN s.neg_amortization = true THEN 'TRUE'
+        ELSE 'FALSE'
+       END = da.neg_amortization
+
+AND CASE 
+        WHEN s.is_interest_only IS NULL THEN 'UNKNOWN'
+        WHEN s.is_interest_only = true THEN 'TRUE'
+        ELSE 'FALSE'
+    END = da.is_interest_only
+
+AND CASE 
+        WHEN s.is_lump_sum_payment IS NULL THEN 'UNKNOWN'
+        WHEN s.is_lump_sum_payment = true THEN 'TRUE'
+        ELSE 'FALSE'
+    END = da.is_lump_sum_payment
     )
 
 	 INSERT INTO gold.fact_loan_application (
@@ -385,8 +405,7 @@ EXCEPTION
 END;
 $$;
 
-
-
+ CALL gold.load_loan_default_gold();
 
 
 	

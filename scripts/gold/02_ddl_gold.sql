@@ -79,9 +79,9 @@ CREATE TABLE gold.dim_credit_profile(
 DROP TABLE IF EXISTS gold.dim_application CASCADE;
 CREATE TABLE gold.dim_application(
 	application_id BIGSERIAL PRIMARY KEY,
-	neg_amortization BOOLEAN,
-	is_interest_only BOOLEAN,
-	is_lump_sum_payment BOOLEAN,
+	neg_amortization TEXT,
+	is_interest_only TEXT,
+	is_lump_sum_payment TEXT,
 	load_timestamp TIMESTAMP DEFAULT CURRENT_TIMESTAMP,
 	source_file TEXT
 );

@@ -1,0 +1,127 @@
+/*
+================================================================================
+GOLD LAYER - LOAN DEFAULT DATA WAREHOUSE VIEW
+================================================================================
+
+Purpose:
+This script creates a unified BI view (gold.view_loan_default) by joining the
+fact table with all related dimension tables in the Gold layer of the data warehouse.
+
+The main goal is to provide a fully flattened, analytics-ready dataset for
+reporting and visualization tools such as Power BI.
+
+What this view does:
+- Joins fact_loan_application with all dimension tables
+- Removes surrogate keys and technical IDs from output
+- Exposes only business-level and analytical features
+- Provides a single-table semantic layer for BI consumption
+
+Included Data:
+- Loan financial metrics (amount, interest rate, term, credit score, etc.)
+- Customer attributes (gender, age, income segment)
+- Loan attributes (type, purpose, limits, etc.)
+- Property attributes (region, occupancy, structure type)
+- Credit profile attributes (risk segments, approval status)
+- Application attributes (loan conditions such as amortization types)
+
+Business Outcome:
+This view simplifies analytics by eliminating joins at the BI layer and
+providing a clean, ready-to-use dataset for dashboards, reporting, and ML feature engineering.
+
+================================================================================
+*/
+
+CREATE OR REPLACE VIEW gold.view_loan_default AS
+SELECT
+
+    /* =========================================================
+       FACT METRICS
+    ========================================================= */
+	f.fact_loan_id,
+	f.source_id,
+    f.loan_amount,
+    f.income,
+    f.rate_of_interest,
+    f.term,
+    f.credit_score,
+    f.debt_to_income_ratio,
+    f.loan_to_value_ratio,
+    f.property_value,
+	f.debt_burden_segment,
+    f.is_default,
+
+    /* =========================================================
+       CUSTOMER DIM
+    ========================================================= */
+
+    dc.gender,
+    dc.age,
+    dc.co_applicant_credit_type,
+    dc.income_segment,
+
+    /* =========================================================
+       LOAN DIM
+    ========================================================= */
+
+    dl.loan_limit,
+    dl.loan_type,
+    dl.loan_purpose,
+    dl.business_or_commercial,
+    dl.credit_worthiness,
+    dl.open_credit,
+    dl.security_type,
+
+    /* =========================================================
+       PROPERTY DIM
+    ========================================================= */
+
+    dp.construction_type,
+    dp.occupancy_type,
+    dp.secured_by,
+    dp.total_units,
+    dp.region,
+
+    /* =========================================================
+       CREDIT PROFILE DIM
+    ========================================================= */
+
+    dcp.credit_type,
+    dcp.approval_in_advance,
+    dcp.submission_of_application,
+    dcp.credit_score_segment,
+
+    /* =========================================================
+       APPLICATION DIM
+    ========================================================= */
+
+    da.neg_amortization,
+    da.is_interest_only,
+    da.is_lump_sum_payment,
+
+    /* =========================================================
+       META
+    ========================================================= */
+
+    f.load_timestamp
+
+FROM gold.fact_loan_application f
+
+LEFT JOIN gold.dim_customer dc
+    ON f.customer_id = dc.customer_id
+
+LEFT JOIN gold.dim_loan dl
+    ON f.loan_id = dl.loan_id
+
+LEFT JOIN gold.dim_property dp
+    ON f.property_id = dp.property_id
+
+LEFT JOIN gold.dim_credit_profile dcp
+    ON f.credit_profile_id = dcp.credit_profile_id
+
+LEFT JOIN gold.dim_application da
+    ON f.application_id = da.application_id;
+
+	
+
+
+

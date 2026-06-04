@@ -11,60 +11,60 @@ This project follows the Medallion Architecture pattern, which organizes data in
 Bronze Layer
 The Bronze Layer stores raw data exactly as received from the source system.
 Responsibilities:
+- Raw data ingestion
+- Initial storage of source records
+- Data preservation
+- Basic validation checks
 
-Raw data ingestion
-Initial storage of source records
-Data preservation
-Basic validation checks
 Silver Layer
 The Silver Layer performs data cleansing, standardization, and quality improvements.
 Responsibilities:
+- Data type standardization
+- Missing value handling
+- Duplicate handling
+- Data quality improvements
+- Business rule preparation
 
-Data type standardization
-Missing value handling
-Duplicate handling
-Data quality improvements
-Business rule preparation
 Gold Layer
 The Gold Layer contains analytics-ready data modeled using a dimensional star schema.
 Responsibilities:
+- Business rule implementation
+- Data enrichment
+- Dimensional modeling
+- Analytical optimization
+- Reporting-ready datasets
 
-Business rule implementation
-Data enrichment
-Dimensional modeling
-Analytical optimization
-Reporting-ready datasets
 Project Overview
 The project implements a complete end-to-end data warehousing workflow for loan risk analysis.
 Key features include:
+- Layered Medallion Architecture
+- Automated ETL pipelines using stored procedures
+- Data quality validation checks
+- Star schema dimensional modeling
+- Surrogate key implementation
+- Fact and dimension table design
+- Analytical business rule transformations
+- Reporting-ready Gold Layer view
 
-Layered Medallion Architecture
-Automated ETL pipelines using stored procedures
-Data quality validation checks
-Star schema dimensional modeling
-Surrogate key implementation
-Fact and dimension table design
-Analytical business rule transformations
-Reporting-ready Gold Layer view
 The final model enables efficient analysis of:
+- Customer demographics
+- Loan characteristics
+- Credit profiles
+- Property attributes
+- Loan default behavior
+- Debt burden segmentation
 
-Customer demographics
-Loan characteristics
-Credit profiles
-Property attributes
-Loan default behavior
-Debt burden segmentation
 Project Requirements
 The primary objectives of this project were:
+- Build a layered Data Warehouse using Medallion Architecture
+- Load and manage raw loan application data
+- Perform data cleansing and standardization
+- Implement business transformation rules
+- Design a dimensional star schema
+- Create fact and dimension tables
+- Ensure data quality through validation checks
+- Provide an analytics-ready dataset for downstream reporting and analysis
 
-Build a layered Data Warehouse using Medallion Architecture
-Load and manage raw loan application data
-Perform data cleansing and standardization
-Implement business transformation rules
-Design a dimensional star schema
-Create fact and dimension tables
-Ensure data quality through validation checks
-Provide an analytics-ready dataset for downstream reporting and analysis
 Repository Structure
 SQL-LOAN-RISK-DATA-WAREHOUSE/
 │
@@ -102,6 +102,7 @@ SQL-LOAN-RISK-DATA-WAREHOUSE/
 │
 ├── LICENSE
 └── README.md
+
 Documentation
 Additional project documentation can be found in the docs directory:
 
@@ -115,5 +116,6 @@ Additional project documentation can be found in the docs directory:
 About Me
 My name is Zeynep İrem Can, and I am a Management Information Systems student with a strong interest in Data Analytics, Data Engineering, Data Science, and Machine Learning.
 I actively build hands-on projects to strengthen my practical skills and bridge the gap between academic knowledge and real-world industry requirements. Through projects like this Data Warehouse implementation, I focus on developing experience in data modeling, ETL processes, data quality management, and analytical data architecture.
+
 LinkedIn:
 www.linkedin.com/in/zeynepiremcan

@@ -120,3 +120,29 @@ SQL-LOAN-RISK-DATA-WAREHOUSE/
 │
 ├── LICENSE
 └── README.md
+
+## Documentation
+
+Additional project documentation can be found in the `docs` directory:
+
+| Document                 | Description                                                                                |
+| ------------------------ | ------------------------------------------------------------------------------------------ |
+| `data_architecture.jpeg` | High-level overview of the Medallion Architecture implemented in the project               |
+| `data_flow.jpeg`         | End-to-end data flow and ETL pipeline process across Bronze, Silver, and Gold layers       |
+| `data_model.jpeg`        | Gold Layer dimensional model and star schema relationships                                 |
+| `data_catalog.md`        | Detailed documentation of Gold Layer tables, columns, data types, and business definitions |
+
+---
+
+## About Me
+
+My name is **Zeynep İrem Can**, and I am a senior Management Information Systems student with a strong interest in **Data Analytics, Data Engineering, Data Science, and Machine Learning**.
+
+I actively develop hands-on projects to strengthen my technical skills and bridge the gap between academic learning and real-world industry practices. Through projects like this Data Warehouse implementation, I focus on gaining practical experience in data modeling, ETL development, data quality management, dimensional modeling, and analytical data architecture.
+
+My goal is to build scalable and reliable data solutions while continuously improving my expertise in modern data platforms and analytics technologies.
+
+### LinkedIn
+
+[www.linkedin.com/in/zeynepiremcan](http://www.linkedin.com/in/zeynepiremcan)
+
